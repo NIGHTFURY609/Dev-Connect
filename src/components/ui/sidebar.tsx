@@ -358,12 +358,35 @@ const SidebarHeader = React.forwardRef<
     <div
       ref={ref}
       data-sidebar="header"
-      className={cn("flex flex-col gap-2 p-2", className)}
+      className={cn(
+        "flex h-12 shrink-0 items-center justify-between p-2 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:justify-center",
+        className
+      )}
       {...props}
     />
   )
 })
 SidebarHeader.displayName = "SidebarHeader"
+
+const SidebarTitle = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & { asChild?: boolean }
+>(({ className, asChild, ...props }, ref) => {
+  const Comp = asChild ? Slot : "div"
+
+  return (
+    <Comp
+      ref={ref}
+      data-sidebar="title"
+      className={cn(
+        "text-lg font-medium text-sidebar-foreground group-data-[collapsible=icon]:hidden",
+        className
+      )}
+      {...props}
+    />
+  )
+})
+SidebarTitle.displayName = "SidebarTitle"
 
 const SidebarFooter = React.forwardRef<
   HTMLDivElement,
@@ -758,6 +781,7 @@ export {
   SidebarProvider,
   SidebarRail,
   SidebarSeparator,
+  SidebarTitle,
   SidebarTrigger,
   useSidebar,
 }
