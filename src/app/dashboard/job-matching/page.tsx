@@ -44,7 +44,7 @@ export default function JobMatchingPage() {
           trustScore: developerProfile.trustScore,
           skills: developerProfile.skills,
         },
-        projectListings: jobListings.map(job => ({ ...job, details: job.details || '' })),
+        projectListings: jobListings,
       });
 
       const newMatchedJobs = jobListings.map((job) => {
