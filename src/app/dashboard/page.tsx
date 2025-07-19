@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { TrustScoreAnalysisOutput } from '@/ai/flows/trust-score-analysis';
 import { analyzeTrustScore } from '../actions';
+import { useDeveloperProfile } from '@/context/developer-profile-context';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,14 +23,14 @@ const FormSchema = z.object({
 });
 
 export default function DashboardPage() {
-  const [analysisResult, setAnalysisResult] = useState<TrustScoreAnalysisOutput | null>(null);
+  const { developerProfile, setDeveloperProfile, analysisResult, setAnalysisResult } = useDeveloperProfile();
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      githubProfileUrl: '',
+      githubProfileUrl: developerProfile?.githubProfileUrl || '',
     },
   });
 
@@ -43,6 +43,13 @@ export default function DashboardPage() {
         otherProfileUrls: [],
       });
       setAnalysisResult(result);
+      // Update the developer profile in context
+      setDeveloperProfile(prev => ({
+        ...prev!,
+        githubProfileUrl: data.githubProfileUrl,
+        trustScore: result.trustScore
+      }));
+
     } catch (error) {
       toast({
         variant: 'destructive',

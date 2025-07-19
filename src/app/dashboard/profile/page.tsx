@@ -1,9 +1,11 @@
-import { developerProfile } from '@/lib/data';
+'use client';
+
+import { useDeveloperProfile } from '@/context/developer-profile-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Github, Linkedin, Link as LinkIcon, Edit } from 'lucide-react';
+import { Github, Linkedin, Link as LinkIcon, Edit, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Progress } from '@/components/ui/progress';
@@ -15,6 +17,19 @@ const iconMap: { [key: string]: React.ElementType } = {
 };
 
 export default function ProfilePage() {
+  const { developerProfile } = useDeveloperProfile();
+
+  if (!developerProfile) {
+    return (
+        <div className="flex flex-1 flex-col">
+            <Header title="Profile" />
+            <main className="flex-1 p-4 md:p-6 flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            </main>
+        </div>
+    )
+  }
+
   return (
     <div className="flex flex-1 flex-col">
       <Header title="Profile" />
