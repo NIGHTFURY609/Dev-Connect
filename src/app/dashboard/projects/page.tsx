@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { AIProjectMatchingOutput } from '@/ai/flows/ai-project-matching';
 import { findProjectMatches } from '@/app/actions';
-import { projectListings, developerProfile, Project } from '@/lib/data';
+import { projectListings, Project } from '@/lib/data';
+import { useDeveloperProfile } from '@/context/developer-profile-context';
 import { useToast } from '@/hooks/use-toast';
 
 import { Badge } from '@/components/ui/badge';
@@ -24,8 +25,18 @@ export default function ProjectsPage() {
   const [matchedProjects, setMatchedProjects] = useState<ProjectWithMatch[]>(projectListings);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { developerProfile } = useDeveloperProfile();
 
   const handleMatchmaking = async () => {
+    if (!developerProfile) {
+      toast({
+        variant: 'destructive',
+        title: 'Profile Not Found',
+        description: 'Please analyze a profile on the dashboard first.',
+      });
+      return;
+    }
+    
     setIsLoading(true);
     try {
       const result: AIProjectMatchingOutput = await findProjectMatches({
@@ -71,7 +82,7 @@ export default function ProjectsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button onClick={handleMatchmaking} disabled={isLoading}>
+            <Button onClick={handleMatchmaking} disabled={isLoading || !developerProfile}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
