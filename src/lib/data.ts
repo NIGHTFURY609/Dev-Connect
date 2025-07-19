@@ -42,6 +42,42 @@ export const projectListings: Project[] = [
   },
 ];
 
+export const jobListings: Project[] = [
+  {
+    projectId: 'job-001',
+    company: 'Kerala Startup Mission',
+    title: 'Senior Frontend Developer',
+    requiredSkills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
+    details: 'Lead the development of our new developer portal, focusing on a seamless user experience.',
+    logoUrl: 'https://placehold.co/100x100.png',
+  },
+  {
+    projectId: 'job-002',
+    company: 'TCS',
+    title: 'Full-Stack Engineer',
+    requiredSkills: ['Angular', 'Java', 'Spring Boot', 'AWS'],
+    details: 'Work on enterprise-level applications for our top clients in the banking sector.',
+    logoUrl: 'https://placehold.co/100x100.png',
+  },
+    {
+    projectId: 'job-003',
+    company: 'Quest Global',
+    title: 'AI/ML Engineer',
+    requiredSkills: ['Python', 'TensorFlow', 'PyTorch', 'scikit-learn'],
+    details: 'Develop and deploy machine learning models for industrial automation and predictive maintenance.',
+    logoUrl: 'https://placehold.co/100x100.png',
+  },
+  {
+    projectId: 'job-004',
+    company: 'Infosys',
+    title: 'Cloud Architect',
+    requiredSkills: ['AWS', 'Azure', 'GCP', 'Terraform', 'Kubernetes'],
+    details: 'Design and manage scalable and secure cloud infrastructure for our global clients.',
+    logoUrl: 'https://placehold.co/100x100.png',
+  }
+];
+
+
 export const developerProfile = {
     name: 'Alex Doe',
     avatarUrl: 'https://placehold.co/100x100.png',
