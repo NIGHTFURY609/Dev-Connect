@@ -1,5 +1,3 @@
-// This file is machine-generated - edit at your own risk!
-
 'use server';
 
 /**
@@ -14,17 +12,17 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const TrustScoreAnalysisInputSchema = z.object({
-  githubProfileUrl: z.string().describe('The URL of the developer\'s GitHub profile.'),
-  otherProfileUrls: z.array(z.string()).describe('An array of URLs for the developer\'s other public profiles (e.g., LinkedIn, Stack Overflow).'),
+  githubProfileUrl: z.string().describe("The URL of the developer's GitHub profile."),
+  otherProfileUrls: z.array(z.string()).describe("An array of URLs for the developer's other public profiles (e.g., LinkedIn, Stack Overflow)."),
 });
 export type TrustScoreAnalysisInput = z.infer<typeof TrustScoreAnalysisInputSchema>;
 
 const TrustScoreAnalysisOutputSchema = z.object({
-  trustScore: z.number().describe('A numerical score representing the developer\'s overall trustworthiness and reputation.'),
-  feedback: z.string().describe('AI-generated feedback on the developer\'s strengths and areas for improvement.'),
-  expertiseScore: z.number().describe('A score representing the developer\'s expertise based on their contributions and skills.'),
-  collaborationScore: z.number().describe('A score representing the developer\'s collaboration skills based on their contributions and interactions.'),
-  professionalismScore: z.number().describe('A score representing the developer\'s professionalism based on their online presence.'),
+  trustScore: z.number().describe("A numerical score representing the developer's overall trustworthiness and reputation."),
+  feedback: z.string().describe("AI-generated feedback on the developer's strengths and areas for improvement."),
+  expertiseScore: z.number().describe("A score representing the developer's expertise based on their contributions and skills."),
+  collaborationScore: z.number().describe("A score representing the developer's collaboration skills based on their contributions and interactions."),
+  professionalismScore: z.number().describe("A score representing the developer's professionalism based on their online presence."),
 });
 export type TrustScoreAnalysisOutput = z.infer<typeof TrustScoreAnalysisOutputSchema>;
 
@@ -36,14 +34,22 @@ const trustScoreAnalysisPrompt = ai.definePrompt({
   name: 'trustScoreAnalysisPrompt',
   input: {schema: TrustScoreAnalysisInputSchema},
   output: {schema: TrustScoreAnalysisOutputSchema},
-  prompt: `You are an AI reputation analysis expert. You will analyze developer profiles from GitHub and other sources, and generate a Trust Score along with feedback.
+  prompt: `You are an AI reputation analysis expert. Your task is to analyze a developer's online presence based on provided profile URLs and generate a comprehensive Trust Score.
 
-Analyze the following profiles to determine the developer's expertise, collaboration, and professionalism, and generate a Trust Score (0-100), expertiseScore (0-100), collaborationScore (0-100), and professionalismScore (0-100).
+**Instructions:**
+1.  **Simulate Web Scraping:** You do not have live web access. Act as if you have scraped the content from the URLs provided below. Based on typical content from these platforms (GitHub, LinkedIn, etc.), infer the developer's skills, project contributions, and professional conduct.
+2.  **Analyze and Score:** Evaluate the inferred information across three categories: Expertise, Collaboration, and Professionalism. Assign a score from 0 to 100 for each category.
+    *   **Expertise (0-100):** Assess the quality and complexity of projects, the diversity of technologies used, and the developer's code contributions.
+    *   **Collaboration (0-100):** Evaluate engagement in pull requests, issue discussions, and community interactions. Look for signs of teamwork and positive communication.
+    *   **Professionalism (0-100):** Review the completeness of profiles, the tone of communication, and the overall presentation of their professional identity.
+3.  **Calculate Overall Trust Score:** The final Trust Score is the weighted average of the three category scores: (Expertise * 0.5) + (Collaboration * 0.3) + (Professionalism * 0.2).
+4.  **Provide Feedback:** Generate concise, constructive feedback highlighting the developer's strengths and offering specific, actionable suggestions for improvement.
 
-GitHub Profile: {{{githubProfileUrl}}}
-Other Profiles: {{#each otherProfileUrls}}{{{this}}} {{/each}}
+**Developer Profiles to Analyze:**
+- GitHub Profile: {{{githubProfileUrl}}}
+- Other Profiles: {{#each otherProfileUrls}}{{{this}}} {{/each}}
 
-Provide constructive feedback on the developer's strengths and areas for improvement. Output in JSON format.
+Please provide your analysis in the specified JSON format.
 `,
 });
 
