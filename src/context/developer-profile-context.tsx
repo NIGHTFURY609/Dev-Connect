@@ -10,6 +10,9 @@ type DeveloperProfile = {
     trustScore: number;
     skills: string[];
     githubProfileUrl: string;
+    linkedinProfileUrl: string;
+    stackoverflowProfileUrl: string;
+    leetcodeProfileUrl: string;
     otherProfileUrls: { name: string; url: string; icon: string; }[];
 };
 

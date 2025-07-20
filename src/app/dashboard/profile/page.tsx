@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Github, Linkedin, Link as LinkIcon, Edit, Loader2 } from 'lucide-react';
+import { Github, Linkedin, Link as LinkIcon, Edit, Loader2, Code, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Progress } from '@/components/ui/progress';
@@ -13,6 +13,8 @@ import { Progress } from '@/components/ui/progress';
 const iconMap: { [key: string]: React.ElementType } = {
   Github: Github,
   Linkedin: Linkedin,
+  Stackoverflow: MessageSquare,
+  Leetcode: Code,
   Default: LinkIcon,
 };
 
@@ -29,6 +31,14 @@ export default function ProfilePage() {
         </div>
     )
   }
+
+  const socialLinks = [
+    { name: 'GitHub', url: developerProfile.githubProfileUrl, icon: Github, isPrimary: true },
+    { name: 'LinkedIn', url: developerProfile.linkedinProfileUrl, icon: Linkedin },
+    { name: 'Stack Overflow', url: developerProfile.stackoverflowProfileUrl, icon: MessageSquare },
+    { name: 'LeetCode', url: developerProfile.leetcodeProfileUrl, icon: Code },
+  ].filter(link => link.url);
+
 
   return (
     <div className="flex flex-1 flex-col">
@@ -86,25 +96,17 @@ export default function ProfilePage() {
             </CardHeader>
             <CardContent>
                 <ul className="space-y-3">
-                    <li className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <Github className="h-5 w-5 text-muted-foreground" />
-                            <Link href={developerProfile.githubProfileUrl} className="font-medium hover:underline" target="_blank">
-                                {developerProfile.githubProfileUrl.replace('https://', '')}
-                            </Link>
-                        </div>
-                        <Badge variant="secondary">Primary</Badge>
-                    </li>
-                    {developerProfile.otherProfileUrls.map((profile) => {
-                         const Icon = iconMap[profile.icon] || iconMap.Default;
+                    {socialLinks.map((link) => {
+                         const Icon = link.icon || iconMap.Default;
                         return (
-                            <li key={profile.url} className="flex items-center justify-between">
+                            <li key={link.name} className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <Icon className="h-5 w-5 text-muted-foreground" />
-                                    <Link href={profile.url} className="font-medium hover:underline" target="_blank">
-                                        {profile.url.replace('https://', '')}
+                                    <Link href={link.url} className="font-medium hover:underline" target="_blank">
+                                        {link.url.replace('https://', '')}
                                     </Link>
                                 </div>
+                                {link.isPrimary && <Badge variant="secondary">Primary</Badge>}
                             </li>
                         )
                     })}

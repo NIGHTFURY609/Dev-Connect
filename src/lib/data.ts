@@ -84,7 +84,8 @@ export const developerProfile = {
     trustScore: 88,
     skills: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Firebase', 'GraphQL'],
     githubProfileUrl: 'https://github.com/example',
-    otherProfileUrls: [
-        { name: 'LinkedIn', url: 'https://linkedin.com/in/example', icon: 'Linkedin' },
-    ]
+    linkedinProfileUrl: 'https://linkedin.com/in/example',
+    stackoverflowProfileUrl: 'https://stackoverflow.com/users/12345/example',
+    leetcodeProfileUrl: 'https://leetcode.com/example',
+    otherProfileUrls: []
 };

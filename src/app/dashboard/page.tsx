@@ -15,11 +15,14 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
-import { Github, Loader2, Sparkles } from 'lucide-react';
+import { Github, Linkedin, Loader2, Sparkles, Code, MessageSquare } from 'lucide-react';
 import { Header } from '@/components/header';
 
 const FormSchema = z.object({
   githubProfileUrl: z.string().url({ message: 'Please enter a valid GitHub profile URL.' }),
+  linkedinProfileUrl: z.string().url().optional().or(z.literal('')),
+  stackoverflowProfileUrl: z.string().url().optional().or(z.literal('')),
+  leetcodeProfileUrl: z.string().url().optional().or(z.literal('')),
 });
 
 export default function DashboardPage() {
@@ -31,6 +34,9 @@ export default function DashboardPage() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       githubProfileUrl: developerProfile?.githubProfileUrl || '',
+      linkedinProfileUrl: developerProfile?.linkedinProfileUrl || '',
+      stackoverflowProfileUrl: developerProfile?.stackoverflowProfileUrl || '',
+      leetcodeProfileUrl: developerProfile?.leetcodeProfileUrl || '',
     },
   });
 
@@ -40,13 +46,19 @@ export default function DashboardPage() {
     try {
       const result = await analyzeTrustScore({
         githubProfileUrl: data.githubProfileUrl,
-        otherProfileUrls: [],
+        linkedinProfileUrl: data.linkedinProfileUrl,
+        stackoverflowProfileUrl: data.stackoverflowProfileUrl,
+        leetcodeProfileUrl: data.leetcodeProfileUrl,
+        otherProfileUrls: [], // This can be populated if you add a generic "other" field
       });
       setAnalysisResult(result);
-      // Update the developer profile in context
+      
       setDeveloperProfile(prev => ({
         ...prev!,
         githubProfileUrl: data.githubProfileUrl,
+        linkedinProfileUrl: data.linkedinProfileUrl || '',
+        stackoverflowProfileUrl: data.stackoverflowProfileUrl || '',
+        leetcodeProfileUrl: data.leetcodeProfileUrl || '',
         trustScore: result.trustScore
       }));
 
@@ -147,28 +159,78 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle>AI Trust Score Analysis</CardTitle>
             <CardDescription>
-              Enter a public GitHub profile URL to analyze and generate a trust score.
+              Enter public profile URLs to analyze and generate a trust score. More links provide a more accurate score.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col sm:flex-row items-start gap-4">
-                <FormField
-                  control={form.control}
-                  name="githubProfileUrl"
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel className="sr-only">GitHub Profile URL</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Github className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                          <Input placeholder="https://github.com/username" {...field} className="pl-10" />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="githubProfileUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>GitHub (Required)</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Github className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input placeholder="https://github.com/username" {...field} className="pl-10" />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="linkedinProfileUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>LinkedIn (Optional)</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input placeholder="https://linkedin.com/in/username" {...field} className="pl-10" />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="stackoverflowProfileUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Stack Overflow (Optional)</FormLabel>
+                        <FormControl>
+                           <div className="relative">
+                            <MessageSquare className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input placeholder="https://stackoverflow.com/users/12345" {...field} className="pl-10" />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="leetcodeProfileUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>LeetCode (Optional)</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Code className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input placeholder="https://leetcode.com/username" {...field} className="pl-10" />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
                   {isLoading ? (
                     <>
