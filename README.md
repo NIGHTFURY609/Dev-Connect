@@ -3,3 +3,5 @@ Dev Tech AI – Developer Trust & Collaboration Platform Dev Tech AI is an initi
 Another core feature is a Smart Project Matchmaking engine that connects developers with relevant projects or companies based on their skills, trust scores, and interests. This creates a win-win situation where students and professionals get meaningful opportunities, and organizations find the right talent efficiently. To ensure user safety and transparency, the platform includes a secure Complaint Management System with role-based access, allowing users to raise issues.
 
 Dev Tech AI aims to become a trusted digital infrastructure that not only highlights the potential of Kerala’s developer community but also connects them with real-world opportunities and feedback mechanisms in a meaningful, transparent way.
+
+[![💻 Built at TinkerSpace](https://img.shields.io/badge/Built%20at-TinkerSpace-blueviolet?style=for-the-badge&label=%F0%9F%92%BBBuilt%20at&labelColor=turquoise&color=white)](https://tinkerhub.org/tinkerspace)
